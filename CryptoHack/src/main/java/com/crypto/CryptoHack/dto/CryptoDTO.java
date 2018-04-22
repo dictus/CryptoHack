@@ -13,6 +13,8 @@ import java.util.List;
 public class CryptoDTO {
 
     private String timeSeris;
+    private MarketDetails marketDetails;
+
 
     private List<Instant> timeInterval;
     public List<SellingComponent> sellingComponents = new ArrayList<>();
@@ -96,5 +98,13 @@ public class CryptoDTO {
         }
 
 
+    }
+
+    public MarketDetails getMarketDetails() {
+        return marketDetails;
+    }
+
+    public void setMarketDetails(MarketDetails marketDetails) {
+        this.marketDetails = marketDetails;
     }
 }

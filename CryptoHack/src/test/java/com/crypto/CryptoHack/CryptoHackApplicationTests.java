@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -31,19 +32,18 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
-@RestClientTest(CryptoAPIClient.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureWireMock(port = 0)
 public class CryptoHackApplicationTests {
 
-	@Autowired
-	CryptoAPIClient crpCryptoAPIClient;
+	/*@Autowired
+	CryptoAPIClient crpCryptoAPIClient;*/
 	/*@Autowired
 			@Qualifier("cryptoAPIClient")
 	GetCryptoAPIClient cryptoAPIClient;*/
 
-	@Autowired
+	/*@Autowired
 	private MockRestServiceServer mockServer;
-	private final String testurl = "https://gturnquist-quoters.cfapps.io/api/random";
 
 	private final String uri = "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_INTRADAY&symbol=BTC&market=USD&apikey=UOJJU0KYGVCUZEMC";
 
@@ -64,14 +64,14 @@ public class CryptoHackApplicationTests {
 				.andRespond(withStatus(HttpStatus.OK)
 						//.body(new ClassPathResource(bodyPath))
 						.headers(httpHeaders));
-	}
+	}*/
 
 
 	/*Resource stateFile = new ClassPathResource("api_resp.json"); */
-	//@Test
+	@Test
 	public void testcheckJson() throws IOException,ParseException{
 
-		String jsonFile = readFromFile("C:\\POC\\CryptoHack\\src\\test\\resources\\api_resp.json");
+		String jsonFile = readFromFile("D:\\localGithub\\CryptoHack\\CryptoHack\\src\\test\\resources\\api_resp.json");
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.readTree(jsonFile);
 		TimeStampValues tmsp = new TimeStampValues();
@@ -103,7 +103,7 @@ public class CryptoHackApplicationTests {
 		System.out.println(jsonNode.get("Time Series (Digital Currency Intraday)").elements());
 		//tmsp.setDate(Instant.parse(jsonNode.get("Time Series (Digital Currency Intraday)").get(0).textValue()));
 		System.out.println(tmsp.getTimeSeris());
-		String jsonFile2 = readFromFile("C:\\POC\\CryptoHack\\src\\test\\resources\\eaasy.json");
+		String jsonFile2 = readFromFile("D:\\localGithub\\CryptoHack\\CryptoHack\\src\\test\\resources\\eaasy.json");
 		JsonNode jsonNode2 = objectMapper.readTree(jsonFile2);
 		System.out.println(jsonNode2.get("id").textValue());
 
@@ -124,7 +124,7 @@ public class CryptoHackApplicationTests {
 				input.close();
 			}
 		} catch (IOException ex) {
-			ex.getStackTrace();
+			ex.printStackTrace();
 		}
 		return contents.toString();
 	}

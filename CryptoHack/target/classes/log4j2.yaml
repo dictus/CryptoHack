@@ -1,0 +1,30 @@
+Configutation:
+  name: Default
+
+  Appenders:
+
+    Console:
+      name: ConsoleAppender
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%d{MM:dd HH:mm:ss.SSS} [%t] [%level] [%logger{36}] - %msg%n"
+
+    File:
+      name: FileAppender
+      fileName: D:/JIP/Application.log
+      PatternLayout:
+        pattern: "%d{MM:dd HH:mm:ss.SSS} [%t] [%level] [%logger{36}] - %msg%n"
+
+  Loggers:
+
+      Root:
+        level: debug
+        AppenderRef:
+          - ref: ConsoleAppender
+
+      Logger:
+        - name: com.javainterviewpoint
+          level: debug
+          AppenderRef:
+            - ref: FileAppender
+              level: debug

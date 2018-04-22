@@ -3,7 +3,7 @@ package com.crypto.CryptoHack.dto;
 import java.util.Date;
 
 public class SellingComponent {
-        private String vaoluem;
+        private String volume;
 
         private String price;
 
@@ -12,7 +12,7 @@ public class SellingComponent {
         private Date toDay;
 
         public SellingComponent(String vaoluem, String price, String marketCap,Date date) {
-            this.vaoluem = vaoluem;
+            this.volume = vaoluem;
             this.price = price;
             this.marketCap = marketCap;
             this.toDay=date;
@@ -22,12 +22,12 @@ public class SellingComponent {
         return toDay;
     }
 
-    public String getVaoluem() {
-            return vaoluem;
+    public String getVolume() {
+            return volume;
         }
 
-        public void setVaoluem(String vaoluem) {
-            this.vaoluem = vaoluem;
+        public void setVolume(String volume) {
+            this.volume = volume;
         }
 
         public String getPrice() {

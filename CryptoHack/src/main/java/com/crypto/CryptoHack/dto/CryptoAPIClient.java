@@ -1,12 +1,8 @@
 package com.crypto.CryptoHack.dto;
 
-import com.crypto.CryptoHack.CryptoAPIProperties;
 import com.crypto.CryptoHack.SellingDataStoreEntityImpl;
 import com.crypto.CryptoHack.backjpa.SellingDataStore;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -23,26 +19,28 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Service
-@ConfigurationProperties
+//@ConfigurationProperties
 public class CryptoAPIClient {
 
 	private final String uri = "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_INTRADAY&symbol=BTC&market=USD&apikey=UOJJU0KYGVCUZEMC";
 
-	private final RestTemplate restTemplate;
+	@Autowired
+	private RestTemplate restTemplate;
 
+	@Autowired
 	private SellingDataStoreEntityImpl e;
 
-	public CryptoAPIClient(RestTemplateBuilder restTemplateBuilder,SellingDataStoreEntityImpl e) {
-		this.restTemplate = restTemplateBuilder.build();
-		this.e = e;
-		updateDB(e);
+	public CryptoAPIClient() {
+		//this.restTemplate = restTemplateBuilder.build();
+		//this.e = e;
+		//updateDB(e);
 	}
-
-	private void updateDB(SellingDataStoreEntityImpl e) {
+	//@PostConstruct
+	private void updateDB() {
 		List<SellingComponent> listOfInsert =  getDatewise();
-		int count = 2;
+		int count = 0;
 		for (SellingComponent sell:listOfInsert) {
-			e.save(new SellingDataStore(++count,sell.getVaoluem(),sell.getPrice(),sell.getMarketCap(),sell.getToDay()));
+			e.save(new SellingDataStore(++count,sell.getVolume(),sell.getPrice(),sell.getMarketCap(),sell.getToDay()));
 		}
 	}
 
@@ -57,17 +55,20 @@ public class CryptoAPIClient {
 		//ResponseEntity<CryptoDTO> response = (ResponseEntity<CryptoDTO>)obj;
 		//ResponseEntity<String> response = this.restTemplate.exchange(url, HttpMethod.GET, createRequestEntity(url), String.class);
 		//String tmp = response.getBody();
-		List<CryptoDTO> cryptoDTOList = getCryptoDTOSListforAPI();
+		List<CryptoDTO> cryptoDTOList = new ArrayList<>();
+		cryptoDTOList.add(getCryptoDTOSListforAPI());
+
 
 		return cryptoDTOList;
 	}
 
-	private List<CryptoDTO> getCryptoDTOSListforAPI() {
+	public CryptoDTO getCryptoDTOSListforAPI() {
 		CryptoDTO quote = restTemplate.getForObject(uri,
 				CryptoDTO.class);
-		List<CryptoDTO> cryptoDTOList = new ArrayList<>();
-		cryptoDTOList.add(quote);
-		return cryptoDTOList;
+		/*List<CryptoDTO> cryptoDTOList = new ArrayList<>();
+		cryptoDTOList.add(quote);*/
+
+		return quote;
 	}
 
 	public List<SellingComponent> getDatewise(){

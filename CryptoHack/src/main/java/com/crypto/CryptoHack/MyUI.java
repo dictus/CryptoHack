@@ -27,11 +27,13 @@ import java.util.Locale;
 @Title("Crypto Details")
 public class MyUI extends UI {
 
-    @Autowired
-    SellingDataStoreEntityImpl sellingDataStoreEntity;
     private static final Logger log = LoggerFactory.getLogger(MyUI.class);
 
-    private Grid<SellingDataStore> sellsLast = new Grid<>(SellingDataStore.class);
+    //private Grid<SellingDataStore> sellsLast = new Grid<>(SellingDataStore.class);
+    private Grid<SellingComponent> sellsLast = new Grid<>(SellingComponent.class);
+    @Autowired
+    CryptoAPIClient cryptoAPIClient;
+
 
     @Override
     protected void init(final VaadinRequest request) {
@@ -45,27 +47,29 @@ public class MyUI extends UI {
         );
 
         myMenu.addItem("Tabuler Report",null,null);
+
         myMenu.setWidth("20%");
 
 
         sellsLast.setWidth("100%");
         sellsLast.setHeaderVisible(true);
-       /* //normal dead store
-       sellsLast.setItems(sellingDataStoreEntity.findAll());
+        //normal dead store
+       sellsLast.setItems(cryptoAPIClient.getDatewise());
         sellsLast.removeAllColumns();
         sellsLast.addColumn(sellingDataStore -> sellingDataStore.getToDay()).setCaption("Current Day");
         sellsLast.addColumn(sellingDataStore -> sellingDataStore.getPrice()).setCaption("Today's Price");
         sellsLast.addColumn(sellingDataStore -> sellingDataStore.getMarketCap()).setCaption("MarketCap");
-        sellsLast.addColumn(sellingDataStore -> sellingDataStore.getVolume()).setCaption("Volume");*/
+        sellsLast.addColumn(sellingDataStore -> sellingDataStore.getVolume()).setCaption("Volume");
+
+
+        myMenu.addItem(cryptoAPIClient.getCryptoDTOSListforAPI().getMarketDetails().getMarketName(),null,null);
 
 
 
+        Label label2 = new Label("Todays detail");
+        label2.setValue(cryptoAPIClient.getCryptoDTOSListforAPI().getMarketDetails().getMarketLastUpdate().toString());
 
-
-
-
-
-        mainWind.addComponents(myMenu,sellsLast);
+        mainWind.addComponents(myMenu,label2,sellsLast);
 
         mainWind.setSizeFull();
         /*mainLayout.addComponent(leaf);
