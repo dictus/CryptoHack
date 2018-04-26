@@ -1,25 +1,16 @@
 package com.crypto.CryptoHack;
 
-import com.crypto.CryptoHack.backjpa.SellingDataStore;
 import com.crypto.CryptoHack.dto.CryptoAPIClient;
 import com.crypto.CryptoHack.dto.SellingComponent;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.data.provider.DataProvider;
-import com.vaadin.server.Page;
-import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vaadin.viritin.components.DisclosurePanel;
-import org.vaadin.viritin.label.RichText;
-
-import java.util.Calendar;
-import java.util.Locale;
 
 
 @SpringUI
@@ -39,7 +30,7 @@ public class MyUI extends UI {
     protected void init(final VaadinRequest request) {
         DisclosurePanel aboutBox = new DisclosurePanel("Crypto APi result");
         Label label = new Label("Menu");
-        label.setValue("20%");
+        label.setValue("my menu%");
         MenuBar myMenu = new MenuBar();
         myMenu.setDescription(label.getValue());
         HorizontalLayout mainWind = new HorizontalLayout(
@@ -66,10 +57,9 @@ public class MyUI extends UI {
 
 
 
-        Label label2 = new Label("Todays detail");
-        label2.setValue(cryptoAPIClient.getCryptoDTOSListforAPI().getMarketDetails().getMarketLastUpdate().toString());
+        myMenu.addItem(cryptoAPIClient.getCryptoDTOSListforAPI().getMarketDetails().getMarketLastUpdate().toString(),null,null);
 
-        mainWind.addComponents(myMenu,label2,sellsLast);
+        mainWind.addComponents(myMenu,sellsLast);
 
         mainWind.setSizeFull();
         /*mainLayout.addComponent(leaf);

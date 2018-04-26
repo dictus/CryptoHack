@@ -1,9 +1,12 @@
 package com.crypto.CryptoHack.dto;
 
-import com.crypto.CryptoHack.SellingDataStoreEntityImpl;
-import com.crypto.CryptoHack.backjpa.SellingDataStore;
+import com.crypto.CryptoHack.backjpa.domain.SellingDataStore;
+import com.crypto.CryptoHack.backjpa.repo.SellingDataStoreEntityImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
@@ -16,13 +19,14 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 //@ConfigurationProperties
 public class CryptoAPIClient {
 
-	private final String uri = "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_INTRADAY&symbol=BTC&market=USD&apikey=UOJJU0KYGVCUZEMC";
+	public final String uri = "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_INTRADAY&symbol=BTC&market=USD&apikey=UOJJU0KYGVCUZEMC";
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -36,7 +40,7 @@ public class CryptoAPIClient {
 		//updateDB(e);
 	}
 	//@PostConstruct
-	private void updateDB() {
+	public void updateDB() {
 		List<SellingComponent> listOfInsert =  getDatewise();
 		int count = 0;
 		for (SellingComponent sell:listOfInsert) {

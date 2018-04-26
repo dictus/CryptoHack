@@ -1,40 +1,121 @@
 package com.crypto.CryptoHack;
 
-import com.crypto.CryptoHack.dto.*;
-import com.crypto.CryptoHack.dto.Currency;
-import com.crypto.CryptoHack.services.GetCryptoAPIClient;
-import com.crypto.CryptoHack.services.GetCryptoDataService;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.crypto.CryptoHack.dto.CryptoAPIClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.*;
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
-import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWireMock(port = 0)
+@AutoConfigureRestDocs(outputDir = "target/snippets")
+@AutoConfigureMockMvc
 public class CryptoHackApplicationTests {
+
+	@Autowired
+	private RestTemplate restTemplate;
+
+	@Autowired
+	private MockMvc mockMvc;
+
+	@Autowired
+	private CryptoAPIClient cryptoAPIClient;
+
+
+	@Test
+	public void contextLoads1() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders.get("/query"))
+				.andExpect(jsonPath("$.['price']").value("Elmo Herring"))
+				.andDo(document("todayDataController"));
+	}
+
+
+	//@Test
+	public void contextLoads() throws Exception {
+		// will read stubs classpath
+
+		/*MockRestServiceServer server = WireMockRestServiceServer.with(this.restTemplate)
+				.baseUrl(cryptoAPIClient.uri).stubs("classpath:api_resp.json")
+				.build();
+		// We're asserting if WireMock responded properly
+		//assertThat(cryptoAPIClient.getCryptoDTOSListforAPI().getMarketDetails().getMarketName()).isEqualTo("United States Dollar");
+		server.verify();*/
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	/*@Autowired
 	CryptoAPIClient crpCryptoAPIClient;*/
@@ -68,7 +149,7 @@ public class CryptoHackApplicationTests {
 
 
 	/*Resource stateFile = new ClassPathResource("api_resp.json"); */
-	@Test
+	/*@Test
 	public void testcheckJson() throws IOException,ParseException{
 
 		String jsonFile = readFromFile("D:\\localGithub\\CryptoHack\\CryptoHack\\src\\test\\resources\\api_resp.json");
@@ -78,11 +159,11 @@ public class CryptoHackApplicationTests {
 		tmsp.setTimeSeris(jsonNode.get("Meta Data").get("4. Market Code").textValue());
 		//tmsp.setMycryptoDetails(Instant.parse());
 		JsonNode timeDet =	jsonNode.get("Time Series (Digital Currency Intraday)");
-		/*while (iterator.hasNext()){
+		*//*while (iterator.hasNext()){
 
 			JsonNode node = iterator.next();
 			System.out.println(node.textValue());
-		}*/
+		}*//*
 		Iterator<Map.Entry<String, JsonNode>> fields = timeDet.fields();
 
 		while (fields.hasNext()) {
@@ -109,7 +190,7 @@ public class CryptoHackApplicationTests {
 
 		//TimeStampValues emp = objectMapper.readValue(jsonFile, TimeStampValues.class);
 		//System.out.println(emp);
-	}
+	}*/
 
 	public static String readFromFile(String fileName) {
 		StringBuffer contents = new StringBuffer();

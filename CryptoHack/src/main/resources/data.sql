@@ -1,2 +1,0 @@
-insert into selling_data_store (id, market_cap, price, to_day, volume) values (01,'Elmo Herring','Elmo Herring','1991-01-20','dolor.Donec@enimconsequatpurus.net');
-delete from selling_data_store where id=01;
